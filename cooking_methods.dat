@@ -1,0 +1,6 @@
+'{0}を焼く。',yaku,1
+'{0}を{1}分焼く。',yaku,2
+'{0}を一口大に切る。',kiru_hitokuchidai,1
+'お皿に盛る。',moru,1
+
+'[food]を[minute]分焼く。',yaku,2
