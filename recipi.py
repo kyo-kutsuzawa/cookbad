@@ -15,7 +15,8 @@ class Recipi:
     食材一覧，完成までの調理手順，などをまとめたクラス。
     """
     def __init__(self):
-        steps = []
+        self.steps = []
+        self.ingredients = []
 
 
 class Ingredient:
@@ -34,14 +35,17 @@ class CookingMethod:
     ひとつの調理方法を表す。
     穴あきの説明文，説明文の穴に収まる語句，調理手順に対応する画像処理，などをまとめたクラス。
     """
-    def __init__(self, name='', cookfunc=None, describe=''):
+    def __init__(self, name='', cookfunc=None, describe='', n_ps=0):
         self.name = name            # 調理法の名前（e.g., '焼く'）
-        self.decribe = describe     # 調理説明の文字列（e.g., '[food]を[minute]分焼きます。'）
+        self.describe = describe     # 調理説明の文字列（e.g., '[food]を[minute]分焼きます。'）
         self.cookfunc = cookfunc    # 調理法に対応する処理の関数
         self.ps = []                # 調理説明の穴に入る語句（e.g., [ジャガイモ, 2]）
+        self.n_ps = n_ps
 
     def __call__(self):
-        return self.cookfunc(self)
+        namelist = [item.name for item in self.ps]
+        self.describe = self.describe.format(*namelist)
+        return self.cookfunc(self, *self.ps)
 
 
 if __name__ == '__main__':
