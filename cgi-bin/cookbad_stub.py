@@ -51,7 +51,7 @@ def web():
     rcp.ingredients = generate_ingredients(random.randint(3, 10))
     materials = copy.deepcopy(rcp.ingredients)
 
-    for i in range(random.randint(3, 5)):
+    for i in range(random.randint(5, 12)):
         add_cooking(rcp)
 
     # 最後に，すべてを皿に盛る
