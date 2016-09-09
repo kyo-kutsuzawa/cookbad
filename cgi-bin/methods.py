@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python
+#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
 #-------------------------------------------------------------------------------
@@ -12,8 +12,8 @@
 # Licence:     <your licence>
 #-------------------------------------------------------------------------------
 
-import cv2  # 変更
-import numpy as np  # 変更
+import cv2
+import numpy as np
 import recipi
 
 
@@ -44,10 +44,10 @@ def yaku_img(img, minute):
     基本的には，引数に画像をとって，加工処理した新しい画像を返す構造。
     今回は，第2引数に調理時間をとる。
     """
-    new_img = '{}_minutes baked '.format(minute) + img # スタブなので，画像の代わりに文字列を加工していく
-    return new_img
     # 処理……
     gamma = 1.0 / minute
+    if gamma > 1:
+        gamma = 1
 
     lookUpTable = np.zeros((256, 1), dtype = 'uint8')
 
@@ -67,25 +67,49 @@ def yaku_img(img, minute):
 def niru_func(self, food):
     minute = 1
 
-    food.image = yaku_img(food.image, minute)
+    food.image = niru_img(food.image, minute)
     food.name = '煮' + food.name
     food.history.append(self.name)
     self.describe = self.describe.format(minute)
 
+def niru_img(img, minute):
+    gamma = 2.0 / minute
+    if gamma > 1:
+        gamma = 1
+    if gamma <= 1:
+        gamma = 0.1
+    
+    lookUpTable = np.zeros((256, 1), dtype = 'uint8')
+    
+    for i in range(256):
+        lookUpTable[i][0] = 255 * pow(float(i) / 255, 1.0 / gamma)
+    
+    new_img = cv2.LUT(img, lookUpTable)
+    
+    return new_img
+
 
 def moru_func(self, food):
-    food.image = yaku_img(food.image, 3)
+    food.image = moru_img(food.image, 3)
     food.name = food.name + '盛り'
     food.history.append(self.name)
+
+def moru_img(img, minute):
+    #未実装
+    return img
 
 
 def mix_func(self, food1, food2):
     newfood = recipi.Ingredient()
-
-    newfood.image = yaku_img(food1.image, 3)
+    
+    newfood.image = mix_img(food1.image, 3)
     newfood.name = food1.name + food2.name
     newfood.history.append(self.name)
+    
+def mix_img(img, minute):
+    #未実装
+    return img
 
-
+    
 if __name__ == '__main__':
     pass
