@@ -78,14 +78,14 @@ def niru_img(img, minute):
         gamma = 1
     if gamma <= 1:
         gamma = 0.1
-    
+
     lookUpTable = np.zeros((256, 1), dtype = 'uint8')
-    
+
     for i in range(256):
         lookUpTable[i][0] = 255 * pow(float(i) / 255, 1.0 / gamma)
-    
+
     new_img = cv2.LUT(img, lookUpTable)
-    
+
     return new_img
 
 
@@ -101,15 +101,62 @@ def moru_img(img, minute):
 
 def mix_func(self, food1, food2):
     newfood = recipi.Ingredient()
-    
-    newfood.image = mix_img(food1.image, 3)
+
+    newfood.image = mix_img(food1.image, food2.image)
     newfood.name = food1.name + food2.name
     newfood.history.append(self.name)
-    
-def mix_img(img, minute):
-    #未実装
-    return img
+    cv2.imshow('New', newfood.image)
 
-    
+def mix_img(img1, img2):
+    width = max(img1.shape[0], img2.shape[0])
+    height = max(img1.shape[1], img2.shape[1])
+    new_img = np.array([[[0,0,0,0]]*height]*width, dtype='uint8')
+
+    mask = img2[:,:,3]  # アルファチャンネルだけ抜き出す。
+    mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGRA)  # 4色分に増やす。
+    mask = mask / 255.0  # 0-255だと使い勝手が悪いので、0.0-1.0に変更。
+
+    new_img[0:img1.shape[0], 0:img1.shape[1]] = img1
+
+    new_img[0:img2.shape[0], 0:img2.shape[1]] = (new_img[0:img2.shape[0], 0:img2.shape[1]] * (1 - mask)).astype('uint8')  # 透過率に応じて元の画像を暗くする。
+    new_img[0:img2.shape[0], 0:img2.shape[1]] += (img2 * mask).astype('uint8')  # 貼り付ける方の画像に透過率をかけて加算。
+
+    cv2.imwrite('out.png', new_img)
+    return new_img
+
+
+def test():
+    onion = recipi.Ingredient('玉ねぎ', cv2.imread("./../img/cut_vegetable_onion.png", cv2.IMREAD_UNCHANGED))
+    carrot = recipi.Ingredient('にんじん', cv2.imread("./../img/ninjin_carrot.png", cv2.IMREAD_UNCHANGED))
+    #onion = recipi.Ingredient('玉ねぎ', cv2.imread("./../img/food_lettuce.png", cv2.IMREAD_UNCHANGED))
+    #carrot = recipi.Ingredient('にんじん', cv2.imread("./../img/vegetable_tomato.png", cv2.IMREAD_UNCHANGED))
+
+    # 調理前のジャガイモを表示する
+    print('調理前')
+    print('-'*10)
+    print('名前:', onion.name)
+    #cv2.imshow('Original', onion.image)
+    print('履歴:', onion.history)
+    print('-'*10)
+    print('名前:', carrot.name)
+    #cv2.imshow('Original', carrot.image)
+    print('履歴:', carrot.history)
+    print('-'*10)
+
+    mix = recipi.CookingMethod('混ぜる', mix_func, '{0}と{1}を混ぜます。', 2)
+    mix.ps = [onion, carrot]
+    mix()
+
+    # 調理後のジャガイモを表示する
+    print('\n調理後')
+    print('-'*10)
+    print('名前:', onion.name)
+    #cv2.imshow('After',onion.image)
+    print('履歴:', onion.history)
+    print('-'*10)
+
+    cv2.waitKey()  # 変更
+
+
 if __name__ == '__main__':
-    pass
+    test()
