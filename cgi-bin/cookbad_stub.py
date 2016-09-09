@@ -51,8 +51,15 @@ def web():
     rcp.ingredients = generate_ingredients(random.randint(3, 10))
     materials = copy.deepcopy(rcp.ingredients)
 
-    for i in range(10):
+    for i in range(random.randint(3, 5)):
         add_cooking(rcp)
+
+    # 最後に，すべてを皿に盛る
+    method = recipi.CookingMethod('moru', methods.moru_func, '皿に盛る。', 0)
+    method(rcp)
+    rcp.steps.append(method)
+
+    cv2.imwrite('out.png', rcp.ingredients[0].image)
 
     return rcp, materials
 
@@ -116,49 +123,39 @@ def add_cooking(rcp):
     import copy
 
     method = copy.deepcopy(random.choice(cooking_methods_list))
-    method.ps = random.sample(rcp.ingredients, method.n_ps)
-    method()
-
-    rcp.steps.append(method)
+    if method.n_ps <= len(rcp.ingredients):
+        method.ps = random.sample(rcp.ingredients, method.n_ps)
+        method(rcp)
+        rcp.steps.append(method)
 
 
 ingredients_list = []
 def load_ingredients():
     """ファイルからすべての食材リストを生成する。
     """
+    import csv
     #potato = recipi.Ingredient('じゃがいも', cv2.imread("img/cut_vegetable_potato.png", cv2.IMREAD_UNCHANGED))
-    potato = recipi.Ingredient('じゃがいも', 'ジャガ')
-    niku = recipi.Ingredient('牛肉', 'うし')
-    tamanegi = recipi.Ingredient('玉ねぎ', '卑怯')
-    ninjin = recipi.Ingredient('にんじん', 'キャロット')
-    iwasi = recipi.Ingredient('鰯', 'いわいわ')
 
-    ingredients_list.append(potato)
-    ingredients_list.append(niku)
-    ingredients_list.append(tamanegi)
-    ingredients_list.append(ninjin)
-    ingredients_list.append(iwasi)
-
-    #with open('ingredients.dat') as f:
-    #    pass
+    with open('ingredients.dat', 'r', encoding='utf8') as f:
+        reader = csv.reader(f)
+        for row in reader:
+            print(row)
+            if len(row) == 2:
+                ingredients_list.append(recipi.Ingredient(row[0], cv2.imread('img\\'+row[1], cv2.IMREAD_UNCHANGED)))
 
 
 cooking_methods_list = []
 def load_cookingmethods():
     """ファイルからすべての調理法のリストを生成する。
     """
-    yaku = recipi.CookingMethod('bake', methods.yaku_func, '{0}を{{}}分焼く。', 1)
-    niru = recipi.CookingMethod('niru', methods.niru_func, '{0}を{{}}分煮る。', 1)
-    moru = recipi.CookingMethod('moru', methods.moru_func, '{0}を皿に盛り付ける。', 1)
-    maze = recipi.CookingMethod('mix', methods.mix_func, '{0}と{1}を混ぜる。', 2)
+    import csv
 
-    cooking_methods_list.append(yaku)
-    cooking_methods_list.append(niru)
-    cooking_methods_list.append(moru)
-    cooking_methods_list.append(maze)
-
-    #with open('ingredients.dat') as f:
-    #    pass
+    with open('cooking_methods.dat', 'r', encoding='utf8') as f:
+        reader = csv.reader(f)
+        for row in reader:
+            print(row)
+            if len(row) == 3:
+                cooking_methods_list.append(recipi.CookingMethod('_', getattr(methods, row[1]), row[0], int(row[2])))
 
 
 if __name__ == '__main__':

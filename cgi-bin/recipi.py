@@ -17,6 +17,7 @@ class Recipi:
     def __init__(self):
         self.steps = []
         self.ingredients = []
+        self.ingredients_orig = []
 
 
 class Ingredient:
@@ -42,10 +43,10 @@ class CookingMethod:
         self.ps = []                # 調理説明の穴に入る語句（e.g., [ジャガイモ, 2]）
         self.n_ps = n_ps
 
-    def __call__(self):
+    def __call__(self, rcp):
         namelist = [item.name for item in self.ps]
         self.describe = self.describe.format(*namelist)
-        return self.cookfunc(self, *self.ps)
+        return self.cookfunc(self, rcp, *self.ps)
 
 
 if __name__ == '__main__':

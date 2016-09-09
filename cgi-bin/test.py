@@ -28,16 +28,15 @@ def main():
     for m in materials:
         materials_list.append({'name': m.name})
 
+    after_list = []
+    for a in rcp.ingredients:
+        after_list.append({'name': a.name})
+
     steps_list = []
     for s in rcp.steps:
         steps_list.append({'dsc': s.describe})
 
-    sample_list = []
-    sample_list.append({'title':u"コンテンツtitle1", 'body':u"コンテンツbody1"})
-    sample_list.append({'title':u"コンテンツtitle2", 'body':u"コンテンツbody2"})
-    sample_list.append({'title':u"コンテンツtitle3", 'body':u"コンテンツbody3"})
-
-    html = tpl.render({'title':'aaaaa', 'materials':materials_list, 'recipi':steps_list})
+    html = tpl.render({'title':'aaaaa', 'materials':materials_list, 'after':after_list, 'recipi':steps_list})
 
     #print('Content-type: text/html; charset=UTF-8\r\n')
     print('Content-type: text/html; charset=Shift-JIS\r\n')
