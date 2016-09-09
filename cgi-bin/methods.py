@@ -95,8 +95,45 @@ def moru_func(self, food):
     food.history.append(self.name)
 
 def moru_img(img, minute):
-    #未実装
-    return img
+    # imgはアルファチャンネル付きで
+    src = img
+    dst = cv2.imread('osara_1.png')
+    expansion = 0.9 # 拡大率 任意に変えてください
+    
+    dh, dw = dst.shape[:2]
+    h, w = src.shape[:2]
+    if dw / dh < w / h:
+        rh = int( dw * h / w * expansion )
+        rw = int( dw * expansion )
+    if dw / dh >= w / h:
+        rh = int( dh * expansion )
+        rw = int( dh * w / h * expansion )
+    src = cv2.resize(src, ( rw, rh ))
+    # なんとかしてお皿の画像サイズに収まるようにimgを拡大or縮小する + そのままだと大きすぎて皿に収まらないので拡大率を指定して縮小する
+    
+    mask = src[:,:,3]
+    mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
+    mask = mask / 255.0
+    
+    src = src[:,:,:3]
+    
+    x = int( ( dw - rw ) / 2.0 )
+    y = int( ( dh - rh ) / 2.0 )
+    
+    #print("dw : " + str(dw))
+    #print("dh : " + str(dh))
+    #print("w : " + str(w))
+    #print("h : " + str(h))
+    #print("rw : " + str(rw))
+    #print("rh : " + str(rh))
+    #print("x : " + str(x))
+    #print("y : " + str(y))
+    
+    dst[y:y+rh:, x:x+rw] = ( 1.0 - mask ) * dst[y:y+rh:, x:x+rw]  # 透過率に応じて元の画像を暗くする。
+    dst[y:y+rh:, x:x+rw] = src * mask + dst[y:y+rh:, x:x+rw]  # 貼り付ける方の画像に透過率をかけて加算。
+    # センタリングをする
+    
+    return dst
 
 
 def mix_func(self, food1, food2):
