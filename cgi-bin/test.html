@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="Shift-JIS">
+    <title>Cookbad</title>
+</head>
+
+<body>
+<h1>{{ name }}</h1>
+
+<section id="materials">
+<h1>材料</h1>
+<ul>
+{% for m in materials %}
+    <li>{{ m.name }}</li>
+{% endfor %}
+</ul>
+</section>
+
+<section id="recipi">
+<h1>レシピ</h1>
+<ul>
+{% for step in recipi %}
+    <li>{{ step.dsc }}</li>
+{% endfor %}
+</ul>
+</section>
+</body>
+</html>
+
