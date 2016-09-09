@@ -161,18 +161,25 @@ def mix_func(self, rcp, food1, food2):
 def mix_img(img1, img2):
     width = max(img1.shape[0], img2.shape[0])
     height = max(img1.shape[1], img2.shape[1])
-    new_img = np.array([[[0,0,0,0]]*height]*width, dtype='uint8')
+    new_img = np.array([[[0,0,0]]*height]*width, dtype='uint8')
 
-    mask = img2[:,:,3]  # アルファチャンネルだけ抜き出す。
-    mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGRA)  # 4色分に増やす。
+    alpha1 = img1[:,:,3]  # アルファチャンネルだけ抜き出す。
+    alpha2 = img2[:,:,3]  # アルファチャンネルだけ抜き出す。
+    mask = cv2.cvtColor(alpha2, cv2.COLOR_GRAY2BGR)  # 4色分に増やす。
     mask = mask / 255.0  # 0-255だと使い勝手が悪いので、0.0-1.0に変更。
 
-    new_img[0:img1.shape[0], 0:img1.shape[1]] = img1
+    img2 = img2[:,:,:3]  # アルファチャンネルは取り出しちゃったのでもういらない。
+
+    new_img[0:img1.shape[0], 0:img1.shape[1]] = img1[:,:,:3]
 
     new_img[0:img2.shape[0], 0:img2.shape[1]] = (new_img[0:img2.shape[0], 0:img2.shape[1]] * (1 - mask)).astype('uint8')  # 透過率に応じて元の画像を暗くする。
     new_img[0:img2.shape[0], 0:img2.shape[1]] += (img2 * mask).astype('uint8')  # 貼り付ける方の画像に透過率をかけて加算。
 
-    cv2.imwrite('out.png', new_img)
+    new_img = cv2.cvtColor(new_img, cv2.COLOR_BGR2BGRA)  # 4色分に増やす。
+    new_img[:, :, 3] = 0
+    new_img[0:img1.shape[0], 0:img1.shape[1],3] += alpha1
+    new_img[0:img2.shape[0], 0:img2.shape[1],3] += alpha2
+
     return new_img
 
 
@@ -197,16 +204,20 @@ def test():
     #mix = recipi.CookingMethod('混ぜる', mix_func, '{0}と{1}を混ぜます。', 2)
     #mix.ps = [onion, carrot]
     #mix()
+    rcp = recipi.Recipi()
+    rcp.ingredients.append(onion)
+    rcp.ingredients.append(carrot)
     mix = recipi.CookingMethod('混ぜる', mix_func, '{0}と{1}を混ぜます。', 2)
     mix.ps = [onion, carrot]
-    mix()
+    mix(rcp)
 
     # 調理後のジャガイモを表示する
     print('\n調理後')
     print('-'*10)
-    print('名前:', onion.name)
-    #cv2.imshow('After',onion.image)
-    print('履歴:', onion.history)
+    print('名前:', rcp.ingredients[0].name)
+    cv2.imshow('After', rcp.ingredients[0].image)
+    cv2.imwrite('out.png', rcp.ingredients[0].image)
+    print('履歴:', rcp.ingredients[0].history)
     print('-'*10)
 
     cv2.waitKey()  # 変更
