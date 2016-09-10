@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="shift-jis">
+<title>cookbad</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+<div id="container" >
+
+<header>
+<img src="./../images/cookbad-logo.png">
+</header>
+
+<div class="main">
+	<div class="dish-image" >
+    	<!--ここに料理の画像を入れてね-->
+        <img src="../out.png" >
+    </div>
+    
+    <div class="ingredients">
+    	<h2>材料</h2>
+        <ul>
+{% for m in materials %}
+            <li>{{ m.name }}</li>
+{% endfor %}
+        </ul>
+    </div>
+</div>
+
+<div class="description" >
+    <h2>調理法</h2>
+    <ol class="cooking">
+{% for m in materials %}
+        <li>{{ m.name }}</li>
+{% endfor %}
+    </ol>
+</div>
+
+
+</div>
+</body>
+</html>

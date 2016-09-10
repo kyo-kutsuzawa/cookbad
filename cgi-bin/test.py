@@ -19,7 +19,8 @@ import recipi
 def main():
     #テンプレートファイルを指定
     env = Environment(loader=FileSystemLoader('./', encoding='shift-jis'))
-    tpl = env.get_template('./cgi-bin/test.html')
+    #env = Environment(loader=FileSystemLoader('./', encoding='utf-8'))
+    tpl = env.get_template('./cgi-bin/template.html')
 
     f = cgi.FieldStorage()
     rcp, materials = cookbad_stub.web()
@@ -36,7 +37,8 @@ def main():
     for s in rcp.steps:
         steps_list.append({'dsc': s.describe})
 
-    html = tpl.render({'title':'aaaaa', 'materials':materials_list, 'after':after_list, 'recipi':steps_list})
+    #html = tpl.render({'title':'aaaaa', 'materials':materials_list, 'after':after_list, 'recipi':steps_list})
+    html = tpl.render({'title':'aaaaa', 'materials':materials_list, 'recipi':steps_list})
 
     #print('Content-type: text/html; charset=UTF-8\r\n')
     print('Content-type: text/html; charset=Shift-JIS\r\n')
