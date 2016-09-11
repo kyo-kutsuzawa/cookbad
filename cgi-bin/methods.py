@@ -28,7 +28,7 @@ def yaku_func(self, rcp, food):
     ここでは ps = [焼く食材(Ingredient)，焼く時間(int)] とする。
     """
     import random
-    minute = random.randint(5, 60)
+    minute = random.randint(1, 5)
 
     food.image = yaku_img(food.image, minute)   # 食材画像を焼かれた画像に更新
     food.name = '焼き' + food.name              # 'じゃがいも' → '焼きじゃがいも'
@@ -65,7 +65,8 @@ def yaku_img(img, minute):
 
 
 def niru_func(self, rcp, food):
-    minute = 1
+    import random
+    minute = random.randint(1, 5)
 
     food.image = niru_img(food.image, minute)
     food.name = '煮' + food.name
@@ -104,10 +105,11 @@ def moru_func(self, rcp):
 
 
 def moru_img(*imgs):
+    import random
     # imgはアルファチャンネル付きで
     #src = img
     dst = cv2.imread('img/osara_1.png')
-    expansion = 0.9 # 拡大率 任意に変えてください
+    expansion = 0.8 # 拡大率 任意に変えてください
 
     for src in imgs:
         dh, dw = dst.shape[:2]
@@ -127,8 +129,11 @@ def moru_img(*imgs):
 
         src = src[:,:,:3]
 
-        x = int( ( dw - rw ) / 2.0 )
-        y = int( ( dh - rh ) / 2.0 )
+        margin = 50
+        x = random.randint(margin, int(dw*(1-expansion))-margin)
+        y = random.randint(margin, int(dh*(1-expansion))-margin)
+        #x = int( ( dw - rw ) / 2.0 )
+        #y = int( ( dh - rh ) / 2.0 )
 
         #print("dw : " + str(dw))
         #print("dh : " + str(dh))
@@ -150,7 +155,7 @@ def mix_func(self, rcp, food1, food2):
     newfood = recipi.Ingredient()
 
     newfood.image = mix_img(food1.image, food2.image)
-    newfood.name = food1.name + food2.name
+    newfood.name = food1.name +' '+ food2.name
     newfood.history = [[food1.history]+[food2.history]] + [self.name]
 
     # レシピの食材から，素材を削除して新たな食材を加える
@@ -159,9 +164,13 @@ def mix_func(self, rcp, food1, food2):
     rcp.ingredients.append(newfood)
 
 def mix_img(img1, img2):
-    width = max(img1.shape[0], img2.shape[0])
-    height = max(img1.shape[1], img2.shape[1])
-    new_img = np.array([[[0,0,0]]*height]*width, dtype='uint8')
+    import random
+
+    #width = max(img1.shape[0], img2.shape[0])
+    #height = max(img1.shape[1], img2.shape[1])
+    height = img1.shape[0] + img2.shape[0]
+    width = img1.shape[1] + img2.shape[1]
+    new_img = np.array([[[0,0,0]]*width]*height, dtype='uint8')
 
     alpha1 = img1[:,:,3]  # アルファチャンネルだけ抜き出す。
     alpha2 = img2[:,:,3]  # アルファチャンネルだけ抜き出す。
@@ -170,15 +179,21 @@ def mix_img(img1, img2):
 
     img2 = img2[:,:,:3]  # アルファチャンネルは取り出しちゃったのでもういらない。
 
-    new_img[0:img1.shape[0], 0:img1.shape[1]] = img1[:,:,:3]
+    y1 = random.randint(0, height-img1.shape[0])
+    x1 = random.randint(0, width -img1.shape[1])
+    y2 = random.randint(0, height-img2.shape[0])
+    x2 = random.randint(0, width -img2.shape[1])
 
-    new_img[0:img2.shape[0], 0:img2.shape[1]] = (new_img[0:img2.shape[0], 0:img2.shape[1]] * (1 - mask)).astype('uint8')  # 透過率に応じて元の画像を暗くする。
-    new_img[0:img2.shape[0], 0:img2.shape[1]] += (img2 * mask).astype('uint8')  # 貼り付ける方の画像に透過率をかけて加算。
+    new_img[y1:y1+img1.shape[0], x1:x1+img1.shape[1]] = img1[:,:,:3]
+
+    new_img[y2:y2+img2.shape[0], x2:x2+img2.shape[1]] = (new_img[y2:y2+img2.shape[0], x2:x2+img2.shape[1]] * (1 - mask)).astype('uint8')  # 透過率に応じて元の画像を暗くする。
+    #new_img[y2:y2+img2.shape[0], x2:x2+img2.shape[1]] = (new_img[y2:y2+img2.shape[0], x2:x2+img2.shape[1]]).astype('uint8')  # 透過率に応じて元の画像を暗くする。
+    new_img[y2:y2+img2.shape[0], x2:x2+img2.shape[1]] += (img2 * mask).astype('uint8')  # 貼り付ける方の画像に透過率をかけて加算。
 
     new_img = cv2.cvtColor(new_img, cv2.COLOR_BGR2BGRA)  # 4色分に増やす。
     new_img[:, :, 3] = 0
-    new_img[0:img1.shape[0], 0:img1.shape[1],3] += alpha1
-    new_img[0:img2.shape[0], 0:img2.shape[1],3] += alpha2
+    new_img[y1:y1+img1.shape[0], x1:x1+img1.shape[1],3] = (new_img[y1:y1+img1.shape[0], x1:x1+img1.shape[1],3] + alpha1).astype('uint8')
+    new_img[y2:y2+img2.shape[0], x2:x2+img2.shape[1],3] = (new_img[y2:y2+img2.shape[0], x2:x2+img2.shape[1],3] + alpha2).astype('uint8')
 
     return new_img
 
@@ -215,7 +230,7 @@ def test():
     print('\n調理後')
     print('-'*10)
     print('名前:', rcp.ingredients[0].name)
-    cv2.imshow('After', rcp.ingredients[0].image)
+    #cv2.imshow('After', rcp.ingredients[0].image)
     cv2.imwrite('out.png', rcp.ingredients[0].image)
     print('履歴:', rcp.ingredients[0].history)
     print('-'*10)
