@@ -109,7 +109,7 @@ def moru_img(*imgs):
     # imgはアルファチャンネル付きで
     #src = img
     dst = cv2.imread('img/osara_1.png')
-    expansion = 0.4 # 拡大率 任意に変えてください
+    expansion = 0.8 # 拡大率 任意に変えてください
 
     for src in imgs:
         dh, dw = dst.shape[:2]
