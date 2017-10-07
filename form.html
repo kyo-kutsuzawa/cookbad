@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html>
 <head>
@@ -9,14 +8,15 @@
 	padding: 0;
 	margin: 0;
 }
-
 body{
 	background: rgb(247,243,232);
 	font-family: "Hiragino Maru Gothic W4 JIS2004", "游ゴシック", YuGothic, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: 500;
 	color: rgb(53,53,53);
 }
-
+h1{
+    display: none;
+}
 h2{
 	color: rgb(220, 209, 186);
 }
@@ -91,8 +91,26 @@ header img{
 <div id="container" >
 
 <header>
-<img src="images/cookbad-logo.png">
+    <h1 class="logo">cookbad</h1>
+    <img src="images/cookbad-logo.png">
 </header>
+
+<aside id="aside">
+    <ul>
+        <li><a href="form.html"></a></li>
+        <li><a href="about.html">cookbadについて</a></li>
+    </ul>
+</aside>
+
+<main id="main">
+    <h2 class="heading">使い方</h2>
+    <h2 class="heading">レシピ</h2>
+    <form>
+        <input type="search">
+        <input type="submit">
+    </form>
+    <h2 class="heading">材料</h2>
+</main>
 
 <div class="main">
 	<div class="dish-image" >
@@ -102,23 +120,36 @@ header img{
     
     <div class="ingredients">
     	<h2>材料</h2>
-        <ul>
-
-            <li>牛肉</li>
-
-            <li>トマト</li>
-
-            <li>ワカメ</li>
-
-            <li>ワカメ</li>
-
-            <li>リンゴ</li>
-
-            <li>レタス</li>
-
-            <li>水菜</li>
-
-        </ul>
+        <form method="GET" action="/cgi-bin/test.py">
+        <table border>
+           <tbody>
+            <tr>
+                <td><input type="checkbox" name="stuff1" value="rice">米</td>
+                <td><input type="text" name="volume1" value="初期値1">合</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="stuff2" value="egg">たまご</td>
+                <td><input type="text" name="volume2" value="初期値2">個</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="stuff3" value="ikura">イクラ</td>
+                <td><input type="text" name="volume3" value="初期値3">g</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="stuff4" value="rice">きゅうり</td>
+                <td><input type="text" name="volume4" value="初期値4">本</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="stuff5" value="rice">アスパラガス</td>
+                <td><input type="text" name="volume5" value="初期値5">本</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="stuff6" value="rice">かぼちゃ</td>
+                <td><input type="text" name="volume6" value="初期値6">個</td>
+            </tr>
+            </tbody>
+        </table>
+        </form>
     </div>
 </div>
 
