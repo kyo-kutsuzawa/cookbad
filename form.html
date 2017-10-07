@@ -42,10 +42,10 @@ h2{
     margin: 22.5px;
     padding-top: 10px;
 }
-    #header img{
-        height: 80px;
-        padding: 10px;
-    }
+#header img{
+    height: 80px;
+    padding: 10px;
+}
 .wrapper {
     overflow: hidden;
 }
@@ -58,42 +58,12 @@ h2{
 }
 #main{
     width: 760px;
+/*    height: 800px;*/
     float: right;
     background-color: #fff;
 }
-.main{
-	height: 250px;
-}
-.dish-image{
-	width: 474px;
-	float: left;
-	
-}
-.dish-image img{
-	max-width: 100%;
-	max-height: 250px;
-	display: block;
-	margin: 0 auto;
-}
-.ingredients{
-	width: 474px; 
-	float: right;
-}
-.ingredients li{
-	margin: 0 0 0 35px;
-}
-.description{
-	margin: 22.5px;
-	margin-top: 30px;
-	padding-bottom: 30px;
-	width: 925px;
-	
-}
-.description h2{
-	padding: 0 0 0 20px;
-}
-.description li{
-	margin: 0 0 0 55px;
+#recipe{
+    display: none;
 }
 </style>
 
@@ -111,8 +81,11 @@ h2{
                <h2 class="heading">使い方</h2>
                <p class="desc">材料を選択し、量を入力してください。</p>
            </section>
-           <section>
+           <section id="recipe">
                <h2 class="heading">レシピ</h2>
+               <form method="get" action="">
+                   <input type="text" name="recipe" placeholder="材料を調べたい料理名を入力">
+               </form>
            </section>
            <section>
                <h2 class="heading">材料</h2>
