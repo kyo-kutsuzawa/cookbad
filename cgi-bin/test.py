@@ -1,25 +1,16 @@
 ﻿# -*- coding: utf-8 -*-
 
-#-------------------------------------------------------------------------------
-# Name:         module1
-# Purpose:
-#
-# Author:       kyo
-#
-# Created:      20160909
-# Copyright:    (c) kyo 2016
-# Licence:      <your licence>
-#-------------------------------------------------------------------------------
 
 import cgi
 from jinja2 import Environment, FileSystemLoader
 import cookbad_stub
 import recipi
 
+
 def main():
-    #テンプレートファイルを指定
+    # テンプレートファイルを指定
     env = Environment(loader=FileSystemLoader('./', encoding='shift-jis'))
-    #env = Environment(loader=FileSystemLoader('./', encoding='utf-8'))
+    # env = Environment(loader=FileSystemLoader('./', encoding='utf-8'))
     tpl = env.get_template('./cgi-bin/template.html')
 
     f = cgi.FieldStorage()
@@ -37,7 +28,7 @@ def main():
     for s in rcp.steps:
         steps_list.append({'dsc': s.describe})
 
-    #html = tpl.render({'title':'aaaaa', 'materials':materials_list, 'after':after_list, 'recipi':steps_list})
+    # html = tpl.render({'title':'aaaaa', 'materials':materials_list, 'after':after_list, 'recipi':steps_list})
     html = tpl.render({'title':'aaaaa', 'materials':materials_list, 'recipi':steps_list})
 
     #print('Content-type: text/html; charset=UTF-8\r\n')
