@@ -1,51 +1,151 @@
-<!DOCTYPE html>
 
-<!--  Last Change: 07-Oct-2017. -->
-<!--  First Edit: 2017-10-07  -->
-
-<html lang="ja">
+<!doctype html>
+<html>
 <head>
-<meta name="robots" content="noindex,nofollow" />
-<meta charset="UTF-8">
-<title>  kansei.html </title>
+<meta charset="shift-jis">
+<title>cookbad</title>
+<style type="text/css">
+*{
+	padding: 0;
+	margin: 0;
+}
 
-<!-- 
-<!-- ** p5 -->
-<script src=p5.js></script>
-<script src=p5.dom.js></script>
-<script src=sketch.js></script>
+body{
+	background: rgb(247,243,232);
+	font-family: "Hiragino Maru Gothic W4 JIS2004", "游ゴシック", YuGothic, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 500;
+	color: rgb(53,53,53);
+}
 
- -->
+h2{
+	color: rgb(220, 209, 186);
+}
 
-<!-- 
- <!--** jQuery **-->
-<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.1.min.js"></script>
- -->
+#container{
+	width: 970px;
+	position: relative;
+	background: white;
+	display: block;
+	margin: 0 auto;
+}
 
-<!-- 
- <!--** Bootstrap **-->
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-<!-- Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
- -->
+header{
+	width: 925px;
+	height: 95px;
+	margin: 22.5px;
+	padding-top: 10px;
+}
 
-<!--** other CSS **-->
-<!--<link rel="stylesheet" type="text/css" href="example.css">-->
+header img{
+	height: 80px;
+	padding: 10px;
+}
 
-<!-- 
- <!--** other JavaScript **-->
- <script type="text/javascript" src="example.js"></script>
- <script type="text/javascript">
- $(document).ready(function(){
-});
-</script>
- -->
+.main{
+	height: 250px;
+}
+
+.dish-image{
+	width: 474px;  
+	float: left;
+	
+}
+
+.dish-image img{
+	max-width: 100%;
+	max-height: 250px;
+	display: block;
+	margin: 0 auto;
+}
+
+.ingredients{
+	width: 474px; 
+	float: right;
+}
+
+
+.ingredients li{
+	margin: 0 0 0 35px;
+}
+
+.description{
+	margin: 22.5px;
+	margin-top: 30px;
+	padding-bottom: 30px;
+	width: 925px;
+	
+}
+
+.description h2{
+	padding: 0 0 0 20px;
+}
+
+.description li{
+	margin: 0 0 0 55px;
+}
+</style>
+
 </head>
+
 <body>
-  
-<p>Hello World!</p>
+<div id="container" >
+
+<header>
+<img src="./../images/cookbad-logo.png">
+</header>
+
+<div class="main">
+	<div class="dish-image" >
+    	<!--ここに料理の画像を入れてね-->
+        <img src="../out.png" >
+    </div>
+    
+    <div class="ingredients">
+    	<h2>材料</h2>
+        <ul>
+
+            <li>牛肉</li>
+
+            <li>トマト</li>
+
+            <li>ワカメ</li>
+
+            <li>ワカメ</li>
+
+            <li>リンゴ</li>
+
+            <li>レタス</li>
+
+            <li>水菜</li>
+
+        </ul>
+    </div>
+</div>
+
+<div class="description" >
+    <h2>調理法</h2>
+    <ol class="cooking">
+
+    <li>トマト を 4分焼く。</li>
+
+    <li>焼きトマト を 2分煮る。</li>
+
+    <li>煮焼きトマト を 4分焼く。</li>
+
+    <li>牛肉 を 1分煮る。</li>
+
+    <li>ワカメ を 4分焼く。</li>
+
+    <li>煮牛肉 を 3分煮る。</li>
+
+    <li>焼き煮焼きトマト を 3分煮る。</li>
+
+    <li>皿に盛る。</li>
+
+    </ol>
+</div>
+
+
+</div>
 </body>
-<
+</html>
