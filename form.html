@@ -14,60 +14,74 @@ body{
     font-weight: 500;
 	color: rgb(53,53,53);
 }
+a {
+    text-decoration: none;
+    color: #5C4736;
+}
+li {
+    margin: 0 0 0 20px;
+    list-style: none;
+}
 h1{
     display: none;
 }
 h2{
 	color: rgb(220, 209, 186);
+    padding: 0 0 0 20px;
 }
-
 #container{
-	width: 970px;
+	width: 960px;
 	position: relative;
 	background: white;
 	display: block;
 	margin: 0 auto;
 }
-
-header{
-	width: 925px;
-	height: 95px;
-	margin: 22.5px;
-	padding-top: 10px;
+#header{
+    width: 925px;
+    height: 95px;
+    margin: 22.5px;
+    padding-top: 10px;
 }
-
-header img{
-	height: 80px;
-	padding: 10px;
+    #header img{
+        height: 80px;
+        padding: 10px;
+    }
+.wrapper {
+    overflow: hidden;
 }
-
+#aside{
+    width: 200px;
+    padding-bottom: 32768px;
+    margin-bottom: -32768px;
+    float: left;
+    background-color: #C8D599;
+}
+#main{
+    width: 760px;
+    float: right;
+    background-color: #fff;
+}
 .main{
 	height: 250px;
 }
-
 .dish-image{
-	width: 474px;  
+	width: 474px;
 	float: left;
 	
 }
-
 .dish-image img{
 	max-width: 100%;
 	max-height: 250px;
 	display: block;
 	margin: 0 auto;
 }
-
 .ingredients{
 	width: 474px; 
 	float: right;
 }
-
-
 .ingredients li{
 	margin: 0 0 0 35px;
 }
-
 .description{
 	margin: 22.5px;
 	margin-top: 30px;
@@ -75,11 +89,9 @@ header img{
 	width: 925px;
 	
 }
-
 .description h2{
 	padding: 0 0 0 20px;
 }
-
 .description li{
 	margin: 0 0 0 55px;
 }
@@ -89,94 +101,61 @@ header img{
 
 <body>
 <div id="container" >
-
-<header>
-    <h1 class="logo">cookbad</h1>
-    <img src="images/cookbad-logo.png">
-</header>
-
-<aside id="aside">
-    <ul>
-        <li><a href="form.html"></a></li>
-        <li><a href="about.html">cookbadについて</a></li>
-    </ul>
-</aside>
-
-<main id="main">
-    <h2 class="heading">使い方</h2>
-    <h2 class="heading">レシピ</h2>
-    <form>
-        <input type="search">
-        <input type="submit">
-    </form>
-    <h2 class="heading">材料</h2>
-</main>
-
-<div class="main">
-	<div class="dish-image" >
-    	<!--ここに料理の画像を入れてね-->
-        <img src="out.png" >
+    <header id="header">
+        <h1 class="logo">cookbad</h1>
+        <img src="images/cookbad-logo.png">
+    </header>
+    <div class="wrapper">    
+        <main id="main">
+           <section>
+               <h2 class="heading">使い方</h2>
+               <p class="desc">材料を選択し、量を入力してください。</p>
+           </section>
+           <section>
+               <h2 class="heading">レシピ</h2>
+           </section>
+           <section>
+               <h2 class="heading">材料</h2>
+               <form method="GET" action="/cgi-bin/test.py">
+                   <table border>
+                       <tbody>
+                           <tr>
+                               <td><input type="checkbox" name="stuff1" value="rice">米</td>
+                               <td><input type="text" name="volume1" value="初期値1">合</td>
+                           </tr>
+                           <tr>
+                               <td><input type="checkbox" name="stuff2" value="egg">たまご</td>
+                               <td><input type="text" name="volume2" value="初期値2">個</td>
+                           </tr>
+                           <tr>
+                               <td><input type="checkbox" name="stuff3" value="ikura">イクラ</td>
+                               <td><input type="text" name="volume3" value="初期値3">g</td>
+                           </tr>
+                           <tr>
+                               <td><input type="checkbox" name="stuff4" value="rice">きゅうり</td>
+                               <td><input type="text" name="volume4" value="初期値4">本</td>
+                           </tr>
+                           <tr>
+                               <td><input type="checkbox" name="stuff5" value="rice">アスパラガス</td>
+                               <td><input type="text" name="volume5" value="初期値5">本</td>
+                           </tr>
+                           <tr>
+                               <td><input type="checkbox" name="stuff6" value="rice">かぼちゃ</td>
+                               <td><input type="text" name="volume6" value="初期値6">個</td>
+                           </tr>
+                       </tbody>
+                   </table>
+                   <input type="submit" value="送信">
+               </form>
+           </section>
+        </main>
+        <aside id="aside">
+            <ul>
+                <li><a href="form.html">TOP</a></li>
+                <li><a href="about.html">cookbadについて</a></li>
+            </ul>
+        </aside>
     </div>
-    
-    <div class="ingredients">
-    	<h2>材料</h2>
-        <form method="GET" action="/cgi-bin/test.py">
-        <table border>
-           <tbody>
-            <tr>
-                <td><input type="checkbox" name="stuff1" value="rice">米</td>
-                <td><input type="text" name="volume1" value="初期値1">合</td>
-            </tr>
-            <tr>
-                <td><input type="checkbox" name="stuff2" value="egg">たまご</td>
-                <td><input type="text" name="volume2" value="初期値2">個</td>
-            </tr>
-            <tr>
-                <td><input type="checkbox" name="stuff3" value="ikura">イクラ</td>
-                <td><input type="text" name="volume3" value="初期値3">g</td>
-            </tr>
-            <tr>
-                <td><input type="checkbox" name="stuff4" value="rice">きゅうり</td>
-                <td><input type="text" name="volume4" value="初期値4">本</td>
-            </tr>
-            <tr>
-                <td><input type="checkbox" name="stuff5" value="rice">アスパラガス</td>
-                <td><input type="text" name="volume5" value="初期値5">本</td>
-            </tr>
-            <tr>
-                <td><input type="checkbox" name="stuff6" value="rice">かぼちゃ</td>
-                <td><input type="text" name="volume6" value="初期値6">個</td>
-            </tr>
-            </tbody>
-        </table>
-        </form>
-    </div>
-</div>
-
-<div class="description" >
-    <h2>調理法</h2>
-    <ol class="cooking">
-
-    <li>トマト を 4分焼く。</li>
-
-    <li>焼きトマト を 2分煮る。</li>
-
-    <li>煮焼きトマト を 4分焼く。</li>
-
-    <li>牛肉 を 1分煮る。</li>
-
-    <li>ワカメ を 4分焼く。</li>
-
-    <li>煮牛肉 を 3分煮る。</li>
-
-    <li>焼き煮焼きトマト を 3分煮る。</li>
-
-    <li>皿に盛る。</li>
-
-    </ol>
-</div>
-
-
 </div>
 </body>
 </html>
