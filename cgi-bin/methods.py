@@ -85,7 +85,16 @@ def niru_img(img, minute):
     for i in range(256):
         lookUpTable[i][0] = 255 * pow(float(i) / 255, 1.0 / gamma)
 
-    new_img = cv2.LUT(img, lookUpTable)
+    #print('aaaaaaaa')
+    #print(img)
+    #print(type(img))
+    #print(img.shape)
+    #print('bbbbbbbb')
+    #new_img = cv2.LUT(img, lookUpTable)
+    new_img = img
+    new_img[:,:,0] = cv2.LUT(img[:,:,0:1], lookUpTable)
+    new_img[:,:,1] = cv2.LUT(img[:,:,1:2], lookUpTable)
+    new_img[:,:,2] = cv2.LUT(img[:,:,2:3], lookUpTable)
 
     return new_img
 
